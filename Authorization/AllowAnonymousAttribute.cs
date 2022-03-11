@@ -1,4 +1,4 @@
-namespace yatt.IdentityService.Authorization;
+namespace IdentityService.Authorization;
 
 [AttributeUsage(AttributeTargets.Method)]
 public class AllowAnonymousAttribute : Attribute

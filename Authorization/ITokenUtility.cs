@@ -1,6 +1,6 @@
-namespace yatt.IdentityService.Authorization;
-using yatt.IdentityService.Entities;
-using yatt.IdentityService.Helpers;
+namespace IdentityService.Authorization;
+using IdentityService.Entities;
+using IdentityService.Helpers;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

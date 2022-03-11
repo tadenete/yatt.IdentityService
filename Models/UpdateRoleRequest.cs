@@ -1,4 +1,4 @@
-namespace yatt.IdentityService.Models;
+namespace IdentityService.Models;
 
 using System.ComponentModel.DataAnnotations;
 public class UpdateRoleRequest

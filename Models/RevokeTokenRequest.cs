@@ -1,4 +1,4 @@
-namespace yatt.IdentityService.Models;
+namespace IdentityService.Models;
 
 public class RevokeTokenRequest
 {

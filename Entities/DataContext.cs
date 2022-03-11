@@ -1,4 +1,4 @@
-namespace yatt.IdentityService.Entities;
+namespace IdentityService.Entities;
 using Microsoft.EntityFrameworkCore;
 
 public class DataContext : DbContext

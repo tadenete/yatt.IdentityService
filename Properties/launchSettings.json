@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "yatt.IdentityService": {
+    "IdentityService": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

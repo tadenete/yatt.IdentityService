@@ -1,9 +1,9 @@
-namespace yatt.IdentityService.Services;
+namespace IdentityService.Services;
 
-using yatt.IdentityService.Models;
-using yatt.IdentityService.Entities;
-using yatt.IdentityService.Authorization;
-using yatt.IdentityService.Helpers;
+using IdentityService.Models;
+using IdentityService.Entities;
+using IdentityService.Authorization;
+using IdentityService.Helpers;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using BCrypt.Net;

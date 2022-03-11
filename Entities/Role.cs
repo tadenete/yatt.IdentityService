@@ -1,4 +1,4 @@
-namespace yatt.IdentityService.Entities;
+namespace IdentityService.Entities;
 public enum Role
 {
     Candidate,

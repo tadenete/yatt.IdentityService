@@ -1,4 +1,4 @@
-namespace yatt.IdentityService.Entities;
+namespace IdentityService.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 

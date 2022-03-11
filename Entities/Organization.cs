@@ -1,4 +1,4 @@
-namespace yatt.IdentityService.Entities;
+namespace IdentityService.Entities;
 using System.ComponentModel.DataAnnotations;
 public class Organization
 {

@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using yatt.IdentityService.Entities;
+using IdentityService.Entities;
 using System.Text.Json.Serialization;
-using yatt.IdentityService.Helpers;
-using yatt.IdentityService.Authorization;
-using yatt.IdentityService.Services;
+using IdentityService.Helpers;
+using IdentityService.Authorization;
+using IdentityService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

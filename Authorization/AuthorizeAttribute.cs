@@ -1,5 +1,5 @@
-namespace yatt.IdentityService.Authorization;
-using yatt.IdentityService.Entities;
+namespace IdentityService.Authorization;
+using IdentityService.Entities;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 

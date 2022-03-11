@@ -1,4 +1,4 @@
-namespace yatt.IdentityService.Helpers;
+namespace IdentityService.Helpers;
 
 using System.Globalization;
 

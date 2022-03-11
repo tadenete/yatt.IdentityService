@@ -1,8 +1,8 @@
-namespace yatt.IdentityService.Helpers;
+namespace IdentityService.Helpers;
 
 using AutoMapper;
-using yatt.IdentityService.Entities;
-using yatt.IdentityService.Models;
+using IdentityService.Entities;
+using IdentityService.Models;
 
 public class AutoMapperProfile : Profile
 {

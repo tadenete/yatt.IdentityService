@@ -1,8 +1,8 @@
-namespace yatt.IdentityService.Authorization;
+namespace IdentityService.Authorization;
 
 using Microsoft.Extensions.Options;
-using yatt.IdentityService.Helpers;
-using yatt.IdentityService.Entities;
+using IdentityService.Helpers;
+using IdentityService.Entities;
 
 public class AuthMiddleware
 {

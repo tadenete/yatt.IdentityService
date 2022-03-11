@@ -1,11 +1,11 @@
-namespace yatt.IdentityService.Services;
+namespace IdentityService.Services;
 
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
-using yatt.IdentityService.Helpers;
+using IdentityService.Helpers;
 
 public interface IEmailService
 {

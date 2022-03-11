@@ -1,4 +1,4 @@
-namespace yatt.IdentityService.Entities;
+namespace IdentityService.Entities;
 public class UserOrganization
 {
     public Guid UserId { get; set; }

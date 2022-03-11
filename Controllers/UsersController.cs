@@ -1,17 +1,17 @@
-namespace yatt.IdentityService.Controllers;
+namespace IdentityService.Controllers;
 
-using yatt.IdentityService.Services;
-using yatt.IdentityService.Models;
+using IdentityService.Services;
+using IdentityService.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using yatt.IdentityService.Helpers;
-using yatt.IdentityService.Authorization;
-using yatt.IdentityService.Entities;
+using IdentityService.Helpers;
+using IdentityService.Authorization;
+using IdentityService.Entities;
 
 [Authorize]
 [ApiController]
 [Route("[Controller]")]
-public class UsersController : RootController
+public class UsersController : BaseController
 {
     private readonly IUserService _userService;
     private readonly AppSettings _optionSettings;
@@ -53,11 +53,12 @@ public class UsersController : RootController
         return Ok(new { message = "Assign role successful." });
     }
 
+    [AllowAnonymous]
     [HttpPost("remove")]
     public IActionResult RemoveRole(UpdateRoleRequest model)
     {
         _userService.RemoveRole(model);
-        return Ok(new { message = "Assign role successful." });
+        return Ok(new { message = "Remove role successful." });
     }
 
     [AllowAnonymous]

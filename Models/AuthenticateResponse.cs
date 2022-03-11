@@ -1,4 +1,4 @@
-namespace yatt.IdentityService.Models;
+namespace IdentityService.Models;
 using System.Text.Json.Serialization;
 public class AuthenticateResponse
 {
