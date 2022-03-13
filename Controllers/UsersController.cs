@@ -25,8 +25,8 @@ public class UsersController : BaseController
     [HttpPost("register")]
     public IActionResult Register(RegisterRequest model)
     {
-        _userService.Register(model, Request.Headers["origin"]);
-        return Ok(new { message = "Registration successful, please check your email for verification instructions." });
+        var response = _userService.Register(model, Request.Headers["origin"]);
+        return Ok(new { message = response });
     }
 
     [AllowAnonymous]

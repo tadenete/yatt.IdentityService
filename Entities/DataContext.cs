@@ -7,13 +7,14 @@ public class DataContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Organization> Organizations { get; set; }
     public DbSet<UserOrganization> UserOrganizations { get; set; }
+
     public DataContext(IConfiguration configuration)
     {
         _configuration = configuration;
     }
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
-        options.UseSqlite(_configuration.GetConnectionString("IdentityServiceDatabase"));
+        options.UseSqlServer(_configuration.GetConnectionString("IdentityServiceDatabase"));
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

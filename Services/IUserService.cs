@@ -12,7 +12,7 @@ using System.Security.Cryptography;
 
 public interface IUserService
 {
-    void Register(RegisterRequest model, string origin);
+    string Register(RegisterRequest model, string origin);
     void VerifyEmail(string token);
     AuthenticateResponse Authenticate(AuthenticateRequest model, string ipAddress);
     void ResetPassword(ResetPasswordRequest model);
@@ -45,13 +45,13 @@ public class UserService : IUserService
         _emailService = emailService;
     }
 
-    public void Register(RegisterRequest model, string origin)
+    public string Register(RegisterRequest model, string origin)
     {
         if (_context.Users.Any(x => x.Email == model.Email))
         {
             //send already registered email
             sendAlreadyRegisteredEmail(model.Email, origin);
-            return;
+            return "User has already been registered with this email";
         }
         var user = _mapper.Map<User>(model);
         user.Created = DateTime.UtcNow;
@@ -65,6 +65,8 @@ public class UserService : IUserService
 
         //send email
         sendVerificationEmail(user, origin);
+
+        return "Registration successful, please check your email for verification instructions.";
 
     }
     public AuthenticateResponse Authenticate(AuthenticateRequest model, string ipaddress)
