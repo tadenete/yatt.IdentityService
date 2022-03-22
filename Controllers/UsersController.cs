@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using IdentityService.Helpers;
 using IdentityService.Authorization;
 using IdentityService.Entities;
+using AutoMapper;
 
 [Authorize]
 [ApiController]
@@ -15,10 +16,12 @@ public class UsersController : BaseController
 {
     private readonly IUserService _userService;
     private readonly AppSettings _optionSettings;
-    public UsersController(IUserService userService, IOptions<AppSettings> optionSettings)
+    private readonly IMapper _mapper;
+    public UsersController(IUserService userService, IOptions<AppSettings> optionSettings, IMapper mapper)
     {
         _userService = userService;
         _optionSettings = optionSettings.Value;
+        _mapper = mapper;
     }
 
     [AllowAnonymous]
@@ -30,22 +33,27 @@ public class UsersController : BaseController
     }
 
     [AllowAnonymous]
-    [HttpPost("verify-email")]
+    [HttpPost("email/verify")]
     public IActionResult VerifyEmail(VerifyEmailRequest model)
     {
         _userService.VerifyEmail(model.Token);
         return Ok(new { message = "Verification successful, you can now login." });
     }
 
-    [AllowAnonymous]
-    [HttpGet("get-user")]
+    [HttpGet("/{id}")]
     public IActionResult Get(Guid Id)
     {
         var response = _userService.GetUser(Id);
         return Ok(response);
     }
 
-    [AllowAnonymous]
+    [HttpGet("current")]
+    public IActionResult Get()
+    {
+        var currentUserResponse = _mapper.Map<UserResponse>(CurrentUser);
+        return Ok(new { currentUser = currentUserResponse });
+    }
+
     [HttpPost("assign")]
     public IActionResult AddRole(UpdateRoleRequest model)
     {
@@ -53,7 +61,6 @@ public class UsersController : BaseController
         return Ok(new { message = "Assign role successful." });
     }
 
-    [AllowAnonymous]
     [HttpPost("remove")]
     public IActionResult RemoveRole(UpdateRoleRequest model)
     {
@@ -66,12 +73,12 @@ public class UsersController : BaseController
     public ActionResult<AuthenticateResponse> Authenticate(AuthenticateRequest model)
     {
         var response = _userService.Authenticate(model, ipAddress());
-        setTokenCookie(response.refreshToken);
+        //setTokenCookie(response.refreshToken);
         return Ok(response);
     }
 
     [AllowAnonymous]
-    [HttpPost("forgot-password")]
+    [HttpPost("password/forgot")]
     public IActionResult ForgotPassword(ForgotPassordRequest model)
     {
         _userService.ForgotPassword(model, Request.Headers["origin"]);
@@ -79,7 +86,7 @@ public class UsersController : BaseController
     }
 
     [AllowAnonymous]
-    [HttpPost("reset-password")]
+    [HttpPost("password/reset")]
     public IActionResult ResetPassword(ResetPasswordRequest model)
     {
         _userService.ResetPassword(model);
@@ -90,23 +97,24 @@ public class UsersController : BaseController
     [HttpPost("refresh")]
     public ActionResult<AuthenticateResponse> RefreshToken()
     {
-        var refreshToken = Request.Cookies["refreshToken"];
-        var response = _userService.RefreshToken(refreshToken, ipAddress());
-        setTokenCookie(response.refreshToken);
+        var refresh = Request.Cookies["refresh"];
+        var response = _userService.RefreshToken(refresh, ipAddress());
+        //setTokenCookie(response.refreshToken);
+        //generate new access token
         return Ok(response);
     }
 
     [HttpPost("revoke")]
     public IActionResult RevokeToken(RevokeTokenRequest model)
     {
-        var token = model.Token ?? Request.Cookies["refreshToken"];
+        var token = model.refresh ?? Request.Cookies["refreshToken"];
         if (string.IsNullOrEmpty(token))
             return BadRequest(new { message = "Token is required." });
 
-        if (Identity.OwnsToken(model.Token) && Identity.Role != Role.OrgAdmin)
+        if (!CurrentUser.OwnsToken(model.refresh) && CurrentUser.Role != Role.OrgAdmin)
             return Unauthorized(new { message = "Unauthorized" });
 
-        _userService.RevokeToken(model.Token, ipAddress());
+        _userService.RevokeToken(model.refresh, ipAddress());
         return Ok(new { message = "Token revoked" });
     }
     private string ipAddress()

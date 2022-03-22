@@ -2,5 +2,5 @@ namespace IdentityService.Models;
 
 public class RevokeTokenRequest
 {
-    public string Token { get; set; }
+    public string refresh { get; set; }
 }

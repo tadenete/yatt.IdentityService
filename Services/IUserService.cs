@@ -21,7 +21,6 @@ public interface IUserService
     void RemoveRole(UpdateRoleRequest model);
     AuthenticateResponse RefreshToken(string token, string ipAddress);
     void RevokeToken(string token, string ipAddress);
-
     UserResponse GetUser(Guid Id);
 }
 
@@ -88,7 +87,7 @@ public class UserService : IUserService
         _context.Update(user);
         _context.SaveChanges();
 
-        return new AuthenticateResponse { token = token, refreshToken = refreshToken.Token };
+        return new AuthenticateResponse { access = token, refresh = refreshToken.Token };
     }
     public void VerifyEmail(string token)
     {
@@ -108,6 +107,7 @@ public class UserService : IUserService
         var user = _context.Users.SingleOrDefault(x => x.RefreshTokens.Any(t => t.Token == token));
         if (user == null)
             throw new AppException("Invalid token");
+
         var refreshToken = user.RefreshTokens.Single(x => x.Token == token);
 
         if (refreshToken.IsRevoked)
@@ -135,7 +135,7 @@ public class UserService : IUserService
         var jwtToken = _tokenUtility.GenerateJwtToken(user);
 
         //return data in authenticate response object.
-        return new AuthenticateResponse { token = token, refreshToken = refreshToken.Token };
+        return new AuthenticateResponse { access = jwtToken, refresh = refreshToken.Token };
     }
 
     public void RevokeToken(string token, string ipAddress)
@@ -313,7 +313,7 @@ public class UserService : IUserService
 
         _emailService.Send(
             to: email,
-            subject: "Sign-up Verification API - Email Already Registered",
+            subject: "Yatt Job fairs - Email Already Registered",
             html: $@"<h4>Email Already Registered</h4>
                         <p>Your email <strong>{email}</strong> is already registered.</p>
                         {message}"
@@ -336,7 +336,7 @@ public class UserService : IUserService
 
         _emailService.Send(
             to: user.Email,
-            subject: "Sign-up Verification API - Reset Password",
+            subject: "Yatt Job Fairs - Reset Password",
             html: $@"<h4>Reset Password Email</h4>
                         {message}"
         );
@@ -358,7 +358,7 @@ public class UserService : IUserService
 
         _emailService.Send(
             to: user.Email,
-            subject: "Sign-up Verification API - Verify Email",
+            subject: "Yatt Job Fairs - Verify Email",
             html: $@"<h4>Verify Email</h4>
                         <p>Thanks for registering!</p>
                         {message}"

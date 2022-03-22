@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 using IdentityService.Helpers;
 using IdentityService.Authorization;
 using IdentityService.Services;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,15 @@ var builder = WebApplication.CreateBuilder(args);
         x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
     services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-    services.AddSwaggerGen();
+    services.AddSwaggerGen(options => {
+        options.AddSecurityDefinition("jwt", 
+        new OpenApiSecurityScheme {
+            Description = "Standard Authorization header",
+            In = ParameterLocation.Header,
+            Name = "Authorization",
+            Type = SecuritySchemeType.ApiKey
+        });
+    });
 
     //configure strongly typed settings object.
     services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
@@ -60,4 +69,4 @@ using (var scope = app.Services.CreateScope())
     app.MapControllers();
 }
 
-app.Run("http://localhost:5000");
+app.Run("http://localhost:5000/");

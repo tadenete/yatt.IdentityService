@@ -5,5 +5,5 @@ using IdentityService.Entities;
 [Controller]
 public abstract class BaseController: Controller
 {
-    public User Identity => (User)HttpContext.Items["User"];
+    public User CurrentUser => (User)HttpContext.Items["User"];
 }

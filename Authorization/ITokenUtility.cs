@@ -11,7 +11,7 @@ using System.Text.Json;
 public interface ITokenUtility
 {
     public string GenerateJwtToken(User user);
-    public int? ValidateJwtToken(string token);
+    public Guid? ValidateJwtToken(string token);
     public RefreshToken GenerateRefreshToken(string ipAddress);
 }
 
@@ -43,7 +43,7 @@ public class TokenUtility : ITokenUtility
         return tokenHandler.WriteToken(token);
     }
 
-    public int? ValidateJwtToken(string token)
+    public Guid? ValidateJwtToken(string token)
     {
         if (token == null) return null;
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -54,10 +54,12 @@ public class TokenUtility : ITokenUtility
             {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
                 ClockSkew = TimeSpan.Zero
             }, out SecurityToken validateToken);
             var jwtToken = (JwtSecurityToken)validateToken;
-            return int.Parse(jwtToken.Claims.First(x => x.Type == nameof(User.Id)).Value);
+            return Guid.Parse(jwtToken.Claims.First(x => x.Type == nameof(User.Id)).Value);
         }
         catch { return null; }
     }
@@ -65,7 +67,7 @@ public class TokenUtility : ITokenUtility
     {
         var refreshToken = new RefreshToken
         {
-            Token = Convert.ToHexString(RandomNumberGenerator.GetBytes(64)),
+            Token = Convert.ToHexString(Guid.NewGuid().ToByteArray()),
             Expires = DateTime.UtcNow.AddDays(_appSettings.RefreshTokenTTL),
             Created = DateTime.UtcNow,
             CreatedByIp = ipAddress
