@@ -29,6 +29,9 @@ public class ErrorHandlerMiddleware
                 case AppException e:
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     break;
+                case InvalidRequestException e:
+                    response.StatusCode = (int)HttpStatusCode.Forbidden;
+                    break;
                 case KeyNotFoundException e:
                     response.StatusCode = (int)HttpStatusCode.NotFound;
                     break;
