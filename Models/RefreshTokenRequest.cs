@@ -1,6 +1,6 @@
 namespace IdentityService.Models;
-public class AuthenticateResponse
+
+public class RefreshTokenRequest
 {
-    public string accessToken { get; set; }
     public string refreshToken { get; set; }
 }

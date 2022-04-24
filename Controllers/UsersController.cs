@@ -11,7 +11,7 @@ using AutoMapper;
 
 [Authorize]
 [ApiController]
-[Route("[Controller]")]
+[Route("/")]
 public class UsersController : BaseController
 {
     private readonly IUserService _userService;
@@ -95,26 +95,23 @@ public class UsersController : BaseController
 
     [AllowAnonymous]
     [HttpPost("refresh")]
-    public ActionResult<AuthenticateResponse> RefreshToken()
+    public ActionResult<AuthenticateResponse> RefreshToken(RefreshTokenRequest model)
     {
-        var refresh = Request.Cookies["refresh"];
-        var response = _userService.RefreshToken(refresh, ipAddress());
-        //setTokenCookie(response.refreshToken);
-        //generate new access token
+        var response = _userService.RefreshToken(model.refreshToken, ipAddress());
         return Ok(response);
     }
 
     [HttpPost("revoke")]
-    public IActionResult RevokeToken(RevokeTokenRequest model)
+    public IActionResult RevokeToken(RefreshTokenRequest model)
     {
-        var token = model.refresh ?? Request.Cookies["refreshToken"];
+        var token = model.refreshToken ?? Request.Cookies["refreshToken"];
         if (string.IsNullOrEmpty(token))
             return BadRequest(new { message = "Token is required." });
 
-        if (!CurrentUser.OwnsToken(model.refresh) && CurrentUser.Role != Role.OrgAdmin)
+        if (!CurrentUser.OwnsToken(model.refreshToken) && CurrentUser.Role != Role.OrgAdmin)
             return Unauthorized(new { message = "Unauthorized" });
 
-        _userService.RevokeToken(model.refresh, ipAddress());
+        _userService.RevokeToken(model.refreshToken, ipAddress());
         return Ok(new { message = "Token revoked" });
     }
     private string ipAddress()

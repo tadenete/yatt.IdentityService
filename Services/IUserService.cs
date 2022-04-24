@@ -87,7 +87,7 @@ public class UserService : IUserService
         _context.Update(user);
         _context.SaveChanges();
 
-        return new AuthenticateResponse { access = token, refresh = refreshToken.Token };
+        return new AuthenticateResponse { accessToken = token, refreshToken = refreshToken.Token };
     }
     public void VerifyEmail(string token)
     {
@@ -135,7 +135,7 @@ public class UserService : IUserService
         var jwtToken = _tokenUtility.GenerateJwtToken(user);
 
         //return data in authenticate response object.
-        return new AuthenticateResponse { access = jwtToken, refresh = refreshToken.Token };
+        return new AuthenticateResponse { accessToken = jwtToken, refreshToken = newRefreshToken.Token};
     }
 
     public void RevokeToken(string token, string ipAddress)
