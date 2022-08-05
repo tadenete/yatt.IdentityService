@@ -14,7 +14,7 @@ public class DataContext : DbContext
     }
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
-        options.UseSqlServer(_configuration.GetConnectionString("IdentityServiceDatabase"));
+        options.UseSqlite(_configuration.GetConnectionString("IdentityServiceDatabase"));
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
